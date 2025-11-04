@@ -48,9 +48,3 @@ A **Spring Cloud Function** serves as the backend, processing incoming data, sto
 - Maven  
 
 ---
-
-## How It Works
-1. The Raspberry Pi gathers environmental data periodically.  
-2. The data is sent to **AWS IoT Core** using MQTT.  
-3. IoT Core forwards the data to the **Spring Cloud Function** backend.  
-4. The backend stores the readings in **DynamoDB** and sends environment updates via **AWS SNS** email notifications to users.
