@@ -1,10 +1,10 @@
 package com.jaberrantisi.piagent.config;
 
-import com.amazonaws.services.iot.client.AWSIotException;
-import com.amazonaws.services.iot.client.AWSIotMqttClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import software.amazon.awssdk.crt.mqtt.MqttClientConnection;
+import software.amazon.awssdk.iot.AwsIotMqttConnectionBuilder;
 
 @Configuration
 public class IoTCoreConfig {
@@ -23,8 +23,15 @@ public class IoTCoreConfig {
 
 
     @Bean
-    public AWSIotMqttClient awsIotMqttClient() throws AWSIotException {
-        return new AWSIotMqttClient(endpoint, clientId, iotCert, key);
+    public AwsIotMqttConnectionBuilder awsIotMqttClient() throws Exception {
+
+        return AwsIotMqttConnectionBuilder
+               .newMtlsBuilderFromPath(iotCert, key)
+                    .withEndpoint(endpoint)
+                    .withClientId(clientId)
+                    .withCleanSession(true);
+
+
     }
 
 }

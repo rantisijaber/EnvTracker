@@ -19,7 +19,7 @@ public class DynamoDbService {
 
     public void saveToDynamo(EnvironmentMessage message) {
         DynamoDbTable<EnvironmentMessage> envMessageTable =
-                dynamoDbEnhancedClient.table("environment-messages", TableSchema.fromBean(EnvironmentMessage.class));
+                dynamoDbEnhancedClient.table("env-messages", TableSchema.fromBean(EnvironmentMessage.class));
         envMessageTable.putItem(message);
     }
 }

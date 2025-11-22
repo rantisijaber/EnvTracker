@@ -36,7 +36,6 @@ public class LambdaFunctions {
                     .tempC(Double.parseDouble((messageDTO.get("tempC").toString())))
                     .humidityPercentage(Double.parseDouble(messageDTO.get("humidityPercentage").toString()))
                     .build();
-            snsService.sendEmailMessage(snsService.emailTemplate(environmentMessage));
             dynamoDbService.saveToDynamo(environmentMessage);
         };
 

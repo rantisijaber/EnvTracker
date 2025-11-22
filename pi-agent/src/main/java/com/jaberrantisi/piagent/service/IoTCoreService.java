@@ -1,31 +1,32 @@
 package com.jaberrantisi.piagent.service;
 
-import com.amazonaws.services.iot.client.AWSIotException;
-import com.amazonaws.services.iot.client.AWSIotMqttClient;
-import com.amazonaws.services.iot.client.AWSIotQos;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.crt.mqtt.MqttClientConnection;
+import software.amazon.awssdk.crt.mqtt.MqttMessage;
+import software.amazon.awssdk.crt.mqtt.QualityOfService;
+import software.amazon.awssdk.iot.AwsIotMqttConnectionBuilder;
 
 @Service
 public class IoTCoreService {
-    private final AWSIotMqttClient IotMqttClient;
+    private final AwsIotMqttConnectionBuilder builder;
 
     @Autowired
-    public IoTCoreService(AWSIotMqttClient IotMqttClient) {
-        this.IotMqttClient = IotMqttClient;
+    public IoTCoreService(AwsIotMqttConnectionBuilder builder) {
+        this.builder = builder;
     }
 
     public void sendMessage(String message) {
-        try {
-            System.out.println("SendMessage IotCoreService");
-            IotMqttClient.connect();
-
-            IotMqttClient.publish("sensors/data", AWSIotQos.QOS1, message);
-
-            IotMqttClient.disconnect();
-
-        } catch (AWSIotException e) {
-            throw new RuntimeException("Could not connect to IOT Core: " + e);
+        System.out.println("Trying to now connect");
+        try (MqttClientConnection connection = builder.build()) {
+            connection.connect().join();
+            connection.publish(new MqttMessage
+                    ("sensors/data", message.getBytes(), QualityOfService.AT_LEAST_ONCE));
+            System.out.println("published");
+            connection.disconnect().join();
+        } catch (Exception e) {
+            System.out.println("Exception: "  + e);
         }
     }
 }

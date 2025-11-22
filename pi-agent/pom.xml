@@ -54,10 +54,11 @@
 
 		<!-- AWS IoT SDK () -->
 		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-iot-device-sdk-java</artifactId>
-			<version>1.3.14-1-geaf055d</version>
+			<groupId>software.amazon.awssdk.iotdevicesdk</groupId>
+			<artifactId>aws-iot-device-sdk</artifactId>
+			<version>1.28.0</version> <!-- or pick latest version from GitHub/Maven Central -->
 		</dependency>
+
 
 		<!-- Safe Apache Commons (explicit override) -->
 		<dependency>
