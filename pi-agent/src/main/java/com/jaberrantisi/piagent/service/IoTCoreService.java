@@ -26,7 +26,7 @@ public class IoTCoreService {
             System.out.println("published");
             connection.disconnect().join();
         } catch (Exception e) {
-            System.out.println("Exception: "  + e);
+            throw new RuntimeException("Exception: "  + e);
         }
     }
 }

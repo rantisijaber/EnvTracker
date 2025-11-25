@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PiAgentApplication {
 
 	public static void main(String[] args) {
+		System.setProperty("diozero.devicefactory", "linuxfs");
 		SpringApplication.run(PiAgentApplication.class, args);
 	}
 

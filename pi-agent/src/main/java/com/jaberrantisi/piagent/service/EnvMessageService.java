@@ -35,14 +35,12 @@ public class EnvMessageService {
     }
 
     public void sendTestPayload() {
-        System.out.println("Creating dto");
         EnvMessageDTO envTest = EnvMessageDTO.builder()
                 .date(LocalDate.now().toString())
                 .co2Ppm(700)
                 .tempC(15.0)
                 .humidityPercentage(10.0)
                 .build();
-        System.out.println("Dto created");
         iotCoreService.sendMessage(payloadCreator(envTest));
     }
 

@@ -1,17 +1,13 @@
-FROM maven:3.9.3-eclipse-temurin-17 AS build
+# Use 64-bit ARM Debian to match Pi architecture
+FROM --platform=linux/arm64 debian:bookworm-slim
+
 WORKDIR /app
 
-COPY pom.xml .
-RUN mvn dependency:go-offline
+RUN apt-get update && apt-get install -y \
+    openjdk-17-jre \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY src ./src
-
-RUN mvn clean package -DskipTests
-
-FROM eclipse-temurin:17-jre
-WORKDIR /app
-
-COPY --from=build /app/target/pi-agent-0.0.1-SNAPSHOT.jar ./pi-agent.jar
+COPY target/pi-agent-0.0.1-SNAPSHOT.jar ./pi-agent.jar
 
 VOLUME /app/certs
 
@@ -20,6 +16,7 @@ ENV AWS_IOT_CLIENT_ID=""
 ENV AWS_IOT_CERT=""
 ENV AWS_IOT_KEY=""
 ENV AWS_IOT_CA=""
+ENV BME280_PATH=""
 
 EXPOSE 8080
 
