@@ -10,7 +10,7 @@ A hybrid backend consisting of **Spring Cloud Function** and **three AWS Lambda 
 ---
 
 ## Features
-- Monitering of temperature, humidity, pressure, and CO₂ levels  
+- Monitoring of temperature, humidity, pressure, and CO₂ levels  
 - Secure IoT MQTT communication via **AWS IoT Core**  
 - **Three AWS Lambda functions** for data storage, analytics, and alerting  
 - Automatic email notifications when environmental conditions exceed safe ranges  
