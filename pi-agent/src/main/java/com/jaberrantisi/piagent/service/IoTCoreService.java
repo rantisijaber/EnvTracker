@@ -17,6 +17,7 @@ public class IoTCoreService {
         this.builder = builder;
     }
 
+
     public void sendMessage(String message) {
         System.out.println("Trying to now connect");
         try (MqttClientConnection connection = builder.build()) {

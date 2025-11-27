@@ -19,6 +19,7 @@ public class EnvironmentMessage {
     private Integer co2Ppm;
     private Double tempC;
     private Double humidityPercentage;
+    private Double pressure;
 
 
     @DynamoDbPartitionKey

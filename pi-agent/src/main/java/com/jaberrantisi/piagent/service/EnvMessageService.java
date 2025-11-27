@@ -3,7 +3,9 @@ package com.jaberrantisi.piagent.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jaberrantisi.piagent.dto.EnvMessageDTO;
+import com.jaberrantisi.piagent.readings.BME280Reading;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,11 +16,13 @@ public class EnvMessageService {
 
     private final ObjectMapper mapper;
     private final IoTCoreService iotCoreService;
+    private final SensorService sensorService;
 
     @Autowired
-    public EnvMessageService(ObjectMapper mapper, IoTCoreService iotCoreService) {
+    public EnvMessageService(ObjectMapper mapper, IoTCoreService iotCoreService, SensorService sensorService) {
         this.mapper = mapper;
         this.iotCoreService = iotCoreService;
+        this.sensorService = sensorService;
     }
 
     public String payloadCreator(EnvMessageDTO envMessageDTO) {
@@ -29,19 +33,16 @@ public class EnvMessageService {
         }
     }
 
-
-    public void SendPayload(EnvMessageDTO envMessageDTO) {
+    @Scheduled(fixedRate = 24 * 60 * 60 * 1000 / 10)
+    public void SendPayload() throws Exception {
+        BME280Reading bme280Reading = sensorService.readBME280();
+        EnvMessageDTO envMessageDTO = EnvMessageDTO.builder()
+                        .date(LocalDate.now().toString())
+                        .pressure(Double.valueOf(bme280Reading.pressure()))
+                        .tempC(Double.valueOf(bme280Reading.temperature()))
+                        .humidityPercentage(Double.valueOf(bme280Reading.humidity()))
+                        .build();
         iotCoreService.sendMessage(payloadCreator(envMessageDTO));
-    }
-
-    public void sendTestPayload() {
-        EnvMessageDTO envTest = EnvMessageDTO.builder()
-                .date(LocalDate.now().toString())
-                .co2Ppm(700)
-                .tempC(15.0)
-                .humidityPercentage(10.0)
-                .build();
-        iotCoreService.sendMessage(payloadCreator(envTest));
     }
 
 }

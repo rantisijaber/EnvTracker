@@ -2,6 +2,7 @@ package com.jaberrantisi.lambdafunction.service;
 
 import com.jaberrantisi.lambdafunction.model.EnvironmentMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.PublishRequest;
@@ -9,6 +10,8 @@ import software.amazon.awssdk.services.sns.model.PublishRequest;
 @Service
 public class SnsService {
     private final SnsClient snsClient;
+
+    @Value("${SNS_ARN}")
     private String arn;
 
     @Autowired
