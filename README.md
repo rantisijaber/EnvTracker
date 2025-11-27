@@ -4,6 +4,7 @@
 It collects real-time environmental data using **BME280** (temperature, humidity, pressure) and **MH-Z19** (CO₂) sensors, sending the readings securely to the cloud through **AWS IoT Core**.  
 A **Spring Cloud Function** serves as the backend, processing incoming data, storing it in **DynamoDB**, and sending environment updates and alerts via **AWS SNS**.
 
+
 ![EnvTracker Architecture](EnvTrackerImg.png)
 
 ---
